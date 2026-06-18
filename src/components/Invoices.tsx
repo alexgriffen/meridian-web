@@ -1,6 +1,7 @@
 import { useEffect, useState } from "react";
 import { api, Invoice } from "../api.js";
 import { date, money, shortId } from "../format.js";
+import { InvoiceDetail } from "./InvoiceDetail.js";
 
 export function Invoices() {
   const [rows, setRows] = useState<Invoice[]>([]);
@@ -8,6 +9,7 @@ export function Invoices() {
   const [err, setErr] = useState<string | null>(null);
   const [loading, setLoading] = useState(false);
   const [auto, setAuto] = useState(true);
+  const [selected, setSelected] = useState<string | null>(null);
 
   const load = async () => {
     setErr(null);
@@ -76,7 +78,7 @@ export function Invoices() {
           </thead>
           <tbody>
             {rows.map((inv) => (
-              <tr key={inv.id}>
+              <tr key={inv.id} className="clickable" onClick={() => setSelected(inv.id)}>
                 <td className="mono" title={inv.id}>
                   {shortId(inv.id)}
                 </td>
@@ -100,6 +102,8 @@ export function Invoices() {
           </tbody>
         </table>
       )}
+
+      {selected && <InvoiceDetail id={selected} onClose={() => setSelected(null)} />}
     </section>
   );
 }

@@ -57,10 +57,20 @@ export interface Invoice {
   id: string;
   customer_id: string;
   subscription_id: string | null;
+  subtotal_minor?: number;
+  tax_minor?: number;
   total_minor: number;
   currency: string;
   status: "draft" | "open" | "paid" | "void";
   created_at: string;
+}
+
+export interface Rollup {
+  customer_id: string;
+  metric: string;
+  day: string;
+  total_quantity: number;
+  updated_at: string;
 }
 
 export const api = {
@@ -80,6 +90,9 @@ export const api = {
     req<{ data: Invoice[] }>(`/v1/invoices${qs(o)}`).then((r) => r.data),
 
   getInvoice: (id: string) => req<Invoice>(`/v1/invoices/${id}`),
+
+  listRollups: (o: { customer_id?: string; metric?: string; limit?: number } = {}) =>
+    req<{ data: Rollup[] }>(`/v1/usage/rollups${qs(o)}`).then((r) => r.data),
 
   postUsage: (b: { customer_id: string; metric: string; quantity: number }) =>
     req<{ accepted: string[] }>(`/v1/usage`, { method: "POST", body: JSON.stringify(b) }),

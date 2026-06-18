@@ -222,3 +222,73 @@ th {
   font-size: 12px;
   white-space: pre-wrap;
 }
+
+tr.clickable {
+  cursor: pointer;
+}
+tr.clickable:hover td {
+  background: var(--panel-2);
+}
+
+.drawer-backdrop {
+  position: fixed;
+  inset: 0;
+  background: rgba(0, 0, 0, 0.5);
+  display: flex;
+  justify-content: flex-end;
+  z-index: 50;
+}
+.drawer {
+  width: 420px;
+  max-width: 92vw;
+  height: 100%;
+  background: var(--panel);
+  border-left: 1px solid var(--border);
+  padding: 22px;
+  overflow-y: auto;
+}
+.drawer-head {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  margin-bottom: 8px;
+}
+.drawer-head h3 {
+  margin: 0;
+}
+.amount {
+  font-size: 28px;
+  font-weight: 600;
+  display: flex;
+  align-items: center;
+  gap: 12px;
+  margin: 8px 0 18px;
+}
+.amount .badge {
+  font-size: 12px;
+  font-weight: 400;
+}
+.kv-group {
+  border-top: 1px solid var(--border);
+  padding: 10px 0;
+}
+.kv {
+  display: flex;
+  justify-content: space-between;
+  gap: 16px;
+  padding: 5px 0;
+  font-size: 13px;
+}
+.kv > span:first-child {
+  color: var(--muted);
+}
+.kv code {
+  font-family: ui-monospace, SFMono-Regular, Menlo, monospace;
+  font-size: 12px;
+  word-break: break-all;
+  text-align: right;
+}
+.kv.strong {
+  font-weight: 600;
+  font-size: 15px;
+}
