@@ -2,9 +2,17 @@
 
 > Part of the [Meridian](https://github.com/alexgriffen/meridian) billing & revenue platform — split out as its own repository.
 
-The Meridian **billing console** — a Vite + React + TypeScript single-page app for browsing customers, subscriptions, and invoices, posting usage events, and watching invoices land in real time.
+The Meridian **billing console** — a Vite + React + TypeScript single-page app for managing billing through the public API.
 
 **Type:** service · **Owner:** @platform-api
+
+## Screens
+
+- **Customers** — search by name/email
+- **Subscriptions** — list, create, and switch plans
+- **Invoices** — auto-refreshing list; click a row for a **detail drawer** with the subtotal / tax / total breakdown
+- **Usage** — post usage events and watch them get accepted
+- **Rollups** — daily usage aggregates produced by usage-aggregator, auto-refreshing
 
 ## Talks to
 
@@ -12,7 +20,7 @@ The browser is served from a single origin; `server.mjs` (and Vite's dev proxy)
 forward `/api/*` to the public REST API, so there is no CORS and the tenant
 header stays under the app's control.
 
-- [`meridian-api-gateway`](https://github.com/alexgriffen/meridian-api-gateway) — every `/api/v1/*` call (customers, subscriptions, invoices, usage)
+- [`meridian-api-gateway`](https://github.com/alexgriffen/meridian-api-gateway) — every `/api/v1/*` call (customers, subscriptions, invoices, usage, usage rollups)
 
 ## Run it
 
