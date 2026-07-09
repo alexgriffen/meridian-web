@@ -5,8 +5,9 @@ import { Subscriptions } from "./components/Subscriptions.js";
 import { Invoices } from "./components/Invoices.js";
 import { Usage } from "./components/Usage.js";
 import { Rollups } from "./components/Rollups.js";
+import { Contact } from "./components/Contact.js";
 
-const TABS = ["Customers", "Subscriptions", "Invoices", "Usage", "Rollups"] as const;
+const TABS = ["Customers", "Subscriptions", "Invoices", "Usage", "Rollups", "Contact"] as const;
 type Tab = (typeof TABS)[number];
 
 export function App() {
@@ -59,6 +60,7 @@ export function App() {
         {tab === "Invoices" && <Invoices key={tenant} />}
         {tab === "Usage" && <Usage key={tenant} />}
         {tab === "Rollups" && <Rollups key={tenant} />}
+        {tab === "Contact" && <Contact />}
       </main>
     </div>
   );

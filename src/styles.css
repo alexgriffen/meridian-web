@@ -113,6 +113,7 @@ body {
 
 input,
 select,
+textarea,
 button {
   background: var(--panel-2);
   border: 1px solid var(--border);
@@ -120,6 +121,10 @@ button {
   border-radius: 8px;
   padding: 8px 10px;
   font-size: 13px;
+}
+textarea {
+  font-family: inherit;
+  resize: vertical;
 }
 button {
   cursor: pointer;
@@ -154,6 +159,10 @@ button.link:hover {
 .card.create input {
   flex: 1;
   min-width: 140px;
+}
+.card.create textarea {
+  flex-basis: 100%;
+  width: 100%;
 }
 
 table {

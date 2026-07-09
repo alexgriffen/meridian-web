@@ -96,6 +96,9 @@ export const api = {
 
   postUsage: (b: { customer_id: string; metric: string; quantity: number }) =>
     req<{ accepted: string[] }>(`/v1/usage`, { method: "POST", body: JSON.stringify(b) }),
+
+  sendContact: (b: { name: string; email: string; message: string }) =>
+    req<{ delivered: boolean }>(`/v1/contact`, { method: "POST", body: JSON.stringify(b) }),
 };
 
 export const PLAN_STARTER = "plan_starter";
