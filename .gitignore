@@ -10,3 +10,7 @@ __pycache__/
 .venv/
 coverage/
 .vitest-cache/
+test-results/
+playwright-report/
+blob-report/
+.playwright/

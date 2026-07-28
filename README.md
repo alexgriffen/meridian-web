@@ -40,8 +40,34 @@ pnpm install
 pnpm --filter @meridian/web dev      # http://localhost:5173
 ```
 
+## Tests
+
+Functional browser tests (Playwright, Chromium) cover every screen: tab
+navigation, tenant scoping, customer search, subscription create / plan switch,
+the invoice list + detail drawer, usage submission, and rollups — plus their
+loading, empty, and API-error states.
+
+Each test intercepts `/api/*` in the browser and answers from an in-memory
+fixture backend, so the suite needs **no Postgres and no api-gateway** and
+asserts the request contract (method, path, query, body, `X-Tenant-Id`) as well
+as what the UI renders. Playwright starts the Vite dev server itself.
+
+```bash
+pnpm install
+pnpm --filter @meridian/web test:e2e:install   # one-time: download Chromium
+pnpm --filter @meridian/web test:e2e
+pnpm --filter @meridian/web test:e2e:ui        # interactive
+```
+
+Point the suite at an already-running console with
+`WEB_BASE_URL=http://localhost:5173 pnpm --filter @meridian/web test:e2e`
+(API calls are still stubbed in the browser).
+
 ## Layout
 
 - `src/` — React app (`App.tsx`, `components/`, `api.ts` fetch client)
 - `server.mjs` — production static server + `/api` reverse proxy
 - `vite.config.ts` — dev server + proxy
+- `playwright.config.ts` — functional test runner config (boots Vite)
+- `tests/e2e/` — Playwright specs; `tests/e2e/fixtures/` holds the mock API
+  (`mock-api.ts`), seed data (`data.ts`), and shared page objects (`test.ts`)
