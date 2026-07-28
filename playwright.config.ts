@@ -14,7 +14,15 @@ export default defineConfig({
   forbidOnly: !!process.env.CI,
   retries: process.env.CI ? 2 : 0,
   workers: process.env.CI ? 2 : undefined,
-  reporter: process.env.CI ? [["list"], ["html", { open: "never" }]] : "list",
+  reporter: process.env.CI
+    ? [
+        // annotates the GitHub Actions run (and the PR diff) with failures
+        ["github"],
+        ["list"],
+        ["junit", { outputFile: "test-results/junit.xml" }],
+        ["html", { open: "never" }],
+      ]
+    : "list",
   timeout: 30_000,
   expect: { timeout: 10_000 },
   use: {

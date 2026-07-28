@@ -63,6 +63,11 @@ Point the suite at an already-running console with
 `WEB_BASE_URL=http://localhost:5173 pnpm --filter @meridian/web test:e2e`
 (API calls are still stubbed in the browser).
 
+In CI the suite runs from the umbrella repo's `web-e2e` job. Failures show up as
+inline annotations on the run, a pass/fail table is written to the run summary by
+`tests/junit-summary.mjs`, and the HTML report plus the JUnit XML are uploaded as
+the `playwright-report` artifact.
+
 ## Layout
 
 - `src/` — React app (`App.tsx`, `components/`, `api.ts` fetch client)
