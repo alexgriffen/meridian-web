@@ -68,6 +68,21 @@ inline annotations on the run, a pass/fail table is written to the run summary b
 `tests/junit-summary.mjs`, and the HTML report plus the JUnit XML are uploaded as
 the `playwright-report` artifact.
 
+### BDD scenarios
+
+Five Gherkin scenarios in `tests/bdd/features/` (customer search, invoice
+status filter, invoice breakdown, creating a subscription, tenant switching)
+run through [playwright-bdd](https://github.com/vitalets/playwright-bdd) on the
+same mock API and page objects as the e2e specs. `bddgen` compiles them into
+`.features-gen/` (git-ignored) before Playwright runs them as the `bdd` project.
+
+```bash
+pnpm --filter @meridian/web test:bdd
+```
+
+From this directory, `pnpm test:bdd` does the same thing. `test:e2e` runs only
+the e2e specs.
+
 ## Layout
 
 - `src/` — React app (`App.tsx`, `components/`, `api.ts` fetch client)
@@ -76,3 +91,5 @@ the `playwright-report` artifact.
 - `playwright.config.ts` — functional test runner config (boots Vite)
 - `tests/e2e/` — Playwright specs; `tests/e2e/fixtures/` holds the mock API
   (`mock-api.ts`), seed data (`data.ts`), and shared page objects (`test.ts`)
+- `tests/bdd/` — Gherkin `features/`, `steps/` definitions, and `fixtures.ts`
+  (the e2e fixtures on playwright-bdd's base `test`)
