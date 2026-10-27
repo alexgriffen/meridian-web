@@ -10,7 +10,8 @@
     "typecheck": "tsc -p tsconfig.json --noEmit",
     "test": "vitest run --passWithNoTests",
     "test:e2e": "playwright test --project=chromium",
-    "test:bdd": "bddgen && playwright test --project=bdd",
+    "test:bdd": "bddgen && playwright test --project=bdd --grep-invert @long",
+    "test:soak": "bddgen && playwright test --project=bdd --grep @long",
     "test:e2e:ui": "playwright test --ui",
     "test:e2e:install": "playwright install --with-deps chromium"
   },

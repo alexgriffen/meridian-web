@@ -83,6 +83,22 @@ pnpm --filter @meridian/web test:bdd
 From this directory, `pnpm test:bdd` does the same thing. `test:e2e` runs only
 the e2e specs.
 
+#### Long-running soak scenario
+
+`tests/bdd/features/soak.feature` (tagged `@long`) holds the invoices tab open
+and checks every 30s that auto-refresh is still landing, rows are intact and no
+error is shown. It prints `[soak] minute N/M ...` progress once a minute. It is
+excluded from `test:bdd` and runs on its own:
+
+```bash
+pnpm test:soak                            # 16 minutes, passes
+SOAK_MINUTES=1 pnpm test:soak             # quick check
+SOAK_HANG=1 pnpm test:soak                # stalls the API halfway, hangs until
+                                          # the timeout (SOAK_MINUTES + 2) kills it
+```
+
+On macOS, prefix with `caffeinate -i` so the machine doesn't sleep mid-run.
+
 ## Layout
 
 - `src/` — React app (`App.tsx`, `components/`, `api.ts` fetch client)
