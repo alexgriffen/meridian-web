@@ -1,9 +1,16 @@
-import { test as base, expect, type Locator, type Page } from "@playwright/test";
+import {
+  test as base,
+  expect,
+  type Fixtures,
+  type Locator,
+  type Page,
+  type PlaywrightTestArgs,
+} from "@playwright/test";
 import { MockApi } from "./mock-api.js";
 
 export type TabName = "Customers" | "Subscriptions" | "Invoices" | "Usage" | "Rollups";
 
-interface Fixtures {
+export interface ConsoleFixtures {
   mockApi: MockApi;
   app: ConsoleApp;
 }
@@ -49,7 +56,8 @@ export class ConsoleApp {
   }
 }
 
-export const test = base.extend<Fixtures>({
+/** Shared with the BDD suite, which extends playwright-bdd's `test` instead. */
+export const consoleFixtures: Fixtures<ConsoleFixtures, {}, PlaywrightTestArgs> = {
   mockApi: async ({ page }, use) => {
     const mock = new MockApi();
     await mock.install(page);
@@ -59,6 +67,8 @@ export const test = base.extend<Fixtures>({
     void mockApi; // depend on mockApi so interception exists before any navigation
     await use(new ConsoleApp(page));
   },
-});
+};
+
+export const test = base.extend<ConsoleFixtures>(consoleFixtures);
 
 export { expect };

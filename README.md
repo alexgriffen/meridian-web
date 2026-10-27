@@ -68,6 +68,37 @@ inline annotations on the run, a pass/fail table is written to the run summary b
 `tests/junit-summary.mjs`, and the HTML report plus the JUnit XML are uploaded as
 the `playwright-report` artifact.
 
+### BDD scenarios
+
+Five Gherkin scenarios in `tests/bdd/features/` (customer search, invoice
+status filter, invoice breakdown, creating a subscription, tenant switching)
+run through [playwright-bdd](https://github.com/vitalets/playwright-bdd) on the
+same mock API and page objects as the e2e specs. `bddgen` compiles them into
+`.features-gen/` (git-ignored) before Playwright runs them as the `bdd` project.
+
+```bash
+pnpm --filter @meridian/web test:bdd
+```
+
+From this directory, `pnpm test:bdd` does the same thing. `test:e2e` runs only
+the e2e specs.
+
+#### Long-running soak scenario
+
+`tests/bdd/features/soak.feature` (tagged `@long`) holds the invoices tab open
+and checks every 30s that auto-refresh is still landing, rows are intact and no
+error is shown. It prints `[soak] minute N/M ...` progress once a minute. It is
+excluded from `test:bdd` and runs on its own:
+
+```bash
+pnpm test:soak                            # 16 minutes, passes
+SOAK_MINUTES=1 pnpm test:soak             # quick check
+SOAK_HANG=1 pnpm test:soak                # stalls the API halfway, hangs until
+                                          # the timeout (SOAK_MINUTES + 2) kills it
+```
+
+On macOS, prefix with `caffeinate -i` so the machine doesn't sleep mid-run.
+
 ## Layout
 
 - `src/` — React app (`App.tsx`, `components/`, `api.ts` fetch client)
@@ -76,3 +107,5 @@ the `playwright-report` artifact.
 - `playwright.config.ts` — functional test runner config (boots Vite)
 - `tests/e2e/` — Playwright specs; `tests/e2e/fixtures/` holds the mock API
   (`mock-api.ts`), seed data (`data.ts`), and shared page objects (`test.ts`)
+- `tests/bdd/` — Gherkin `features/`, `steps/` definitions, and `fixtures.ts`
+  (the e2e fixtures on playwright-bdd's base `test`)

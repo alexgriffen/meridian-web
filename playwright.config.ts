@@ -1,4 +1,5 @@
 import { defineConfig, devices } from "@playwright/test";
+import { defineBddConfig } from "playwright-bdd";
 
 // Functional browser tests for the billing console. Every `/api/*` call is
 // intercepted in the browser (see tests/e2e/fixtures/mock-api.ts), so the suite
@@ -8,8 +9,14 @@ process.env.TZ = "UTC";
 const PORT = Number(process.env.WEB_PORT ?? 5173);
 const BASE_URL = process.env.WEB_BASE_URL ?? `http://127.0.0.1:${PORT}`;
 
+// Gherkin scenarios in tests/bdd/features are compiled by `bddgen` into regular
+// Playwright specs under .features-gen, reusing the same mock API fixtures.
+const bddTestDir = defineBddConfig({
+  features: "tests/bdd/features/*.feature",
+  steps: ["tests/bdd/fixtures.ts", "tests/bdd/steps/*.ts"],
+});
+
 export default defineConfig({
-  testDir: "./tests/e2e",
   fullyParallel: true,
   forbidOnly: !!process.env.CI,
   retries: process.env.CI ? 2 : 0,
@@ -32,7 +39,10 @@ export default defineConfig({
     trace: "on-first-retry",
     screenshot: "only-on-failure",
   },
-  projects: [{ name: "chromium", use: { ...devices["Desktop Chrome"] } }],
+  projects: [
+    { name: "chromium", testDir: "./tests/e2e", use: { ...devices["Desktop Chrome"] } },
+    { name: "bdd", testDir: bddTestDir, use: { ...devices["Desktop Chrome"] } },
+  ],
   webServer: process.env.WEB_BASE_URL
     ? undefined
     : {
